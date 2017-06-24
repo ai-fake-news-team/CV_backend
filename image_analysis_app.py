@@ -3,6 +3,7 @@ from flask import Flask, jsonify, abort, request, make_response, url_for
 #from flask.ext.httpauth import HTTPBasicAuth
 from flask_httpauth import HTTPBasicAuth
 import sys
+import os
 
 base = '/home/mehdi/work/CV_backend/'
 
