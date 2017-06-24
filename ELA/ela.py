@@ -4,6 +4,8 @@ from PIL import Image, ImageChops
 import cv2
 import numpy as np
 
+base = '/home/mehdi/work/CV_backend/'
+
 # ORIG = '../fake_ipad.jpg'
 # TEMP = 'temp.jpg'
 # SCALE = 10
@@ -24,31 +26,32 @@ import numpy as np
 #     diff.show()
 
 def cv2_ELA(name):
-    input_image = cv2.imread('../example_images/{}.jpg'.format(name))
+    input_image = cv2.imread(name)
 
     scale = 15
     quality = 75
 
     cv2.imwrite('temp.jpg', input_image, [cv2.IMWRITE_JPEG_QUALITY, quality])
 
-    compressed_image = cv2.imread('temp.jpg')
+    compressed_image = cv2.imread(base+'ELA/temp.jpg')
 
     output_image = (input_image - compressed_image) * scale
-    print name
-    print "# Image shape:", output_image.shape
-    print "# Average pixel:", np.mean(output_image)
+
     gray_image = cv2.cvtColor(output_image, cv2.COLOR_BGR2GRAY)
 
     nonzero = cv2.countNonZero(gray_image)
     total = output_image.shape[0] * output_image.shape[1]
     zero = total - nonzero
     ratio = zero * 100 / float(total)
-    print "# Black pixel ratio:", ratio
 
-    cv2.imwrite('results/{}_results.png'.format(name), output_image)
+    cv2.imwrite(base+'ELA/results/{}_results.png'.format(name), output_image)
+    return ratio, output_image
 
 if __name__ == '__main__':
     #ELA()
-    cv2_ELA('lion')
-    cv2_ELA('real_ipad')
-    cv2_ELA('fake_ipad')
+    for name in ['lion', 'real_ipad', 'fake_ipad']:
+        ratio, output_image = cv2_ELA('../example_images/{}.jpg'.format(name))
+        print name
+        print "# Image shape:", output_image.shape
+        print "# Average pixel:", np.mean(output_image)
+        print "# Black pixel ratio:", ratio
