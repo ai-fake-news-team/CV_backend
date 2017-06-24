@@ -19,7 +19,7 @@ def get_caption(image_path):
         beamsize=3,
         depth_limit=50,
         gpu_id=0,
-        first_word= '',
+        first_word= '<sos>',
         )
 
     captions = caption_generator.generate(image_path)
