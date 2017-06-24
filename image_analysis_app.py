@@ -6,6 +6,8 @@ import sys
 
 base = '/home/mehdi/work/CV_backend/'
 
+os.environ['PATH'] += ':/usr/local/cuda-8.0/bin:/usr/local/cuda-8.0/lib64'
+
 sys.path.append(base)
 from caption_generation import get_caption
 from ELA import cv2_ELA
