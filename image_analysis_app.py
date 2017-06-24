@@ -62,7 +62,7 @@ def launch_analysis():
 
     # Captioning
     captions = get_caption(dir_path+'/{}_original.jpg'.format(image_id))
-    with open(dir_path+'/{}_caption.txt'.format(image_id), 'w'):
+    with open(dir_path+'/{}_caption.txt'.format(image_id), 'w') as f:
         f.write("".join(captions[0]["sentence"]))
 
     # ELA analysis
