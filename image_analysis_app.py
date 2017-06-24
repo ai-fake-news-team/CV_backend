@@ -1,6 +1,12 @@
 #!/usr/bin/env python
 from flask import Flask, jsonify, abort, request, make_response, url_for
-from flask.ext.httpauth import HTTPBasicAuth
+#from flask.ext.httpauth import HTTPBasicAuth
+from flask_httpauth import HTTPBasicAuth
+import sys
+
+sys.path.append('./')
+from caption_generation.generate_caption import get_caption
+from ELA.ela import cv2_ELA
 
 app = Flask(__name__, static_url_path = "")
 auth = HTTPBasicAuth()
@@ -104,6 +110,21 @@ def delete_task(task_id):
         abort(404)
     tasks.remove(task[0])
     return jsonify( { 'result': True } )
+
+@app.route('/api_test', methods = ['POST'])
+@auth.login_required
+def api_test():
+    if not request.json or not 'title' in request.json:
+        abort(400)
+    captions = get_caption('../example_images/lion.jpg')
+    task = {
+        'id': tasks[-1]['id'] + 1,
+        'title': request.json['title'],
+        'description': captions[0],
+        'done': False
+    }
+    tasks.append(task)
+    return jsonify( { 'task': make_public_task(task) } ), 201
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=80)
