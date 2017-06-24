@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 from flask import Flask, jsonify, abort, request, make_response, url_for
 from flask.ext.httpauth import HTTPBasicAuth
 
