@@ -9,8 +9,8 @@ Machine Learning backend to detect fake images
 - [X] Build ELA algorithm with OpenCV
 - [ ] Implement ELA image fakeness scoring
 - [x] Use Darknet for object detection
-- [ ] Use Chainer for caption generation
-- [ ] Setup flask API to handle requests
+- [x] Use Chainer for caption generation
+- [x] Setup flask API to handle requests
 - [ ] Train neural network to recognize weather, number plate, buildings, signs
 - [ ] Compare analysis results with original Tweet data
 - [ ] Return JSON report data
