@@ -4,7 +4,9 @@ from flask import Flask, jsonify, abort, request, make_response, url_for
 from flask_httpauth import HTTPBasicAuth
 import sys
 
-sys.path.append('/home/mehdi/work/CV_backend/')
+base = '/home/mehdi/work/CV_backend/'
+
+sys.path.append(base)
 from caption_generation import get_caption
 from ELA import cv2_ELA
 
@@ -116,7 +118,7 @@ def delete_task(task_id):
 def api_test():
     if not request.json or not 'title' in request.json:
         abort(400)
-    captions = get_caption('../example_images/lion.jpg')
+    captions = get_caption(base+'example_images/lion.jpg')
     task = {
         'id': tasks[-1]['id'] + 1,
         'title': request.json['title'],
