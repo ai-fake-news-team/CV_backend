@@ -81,7 +81,16 @@ def launch_analysis():
             dir_path+'/{}_original.jpg'])
     os.rename('/home/mehdi/work/darknet/predictions.png', dir_path+'/{}_yolo.png'.format(image_id))
 
-    return
+    # Send results
+    result_url = 'http://httpbin.org/post'
+    files = {'object_img': open(dir_path+'/{}_yolo.png'.format(image_id), 'rb'),
+             'error_img': open(dir_path+'/{}_ela.png'.format(image_id), 'rb'),
+             'error_ratio': ratio,
+             'caption': sentence}
+
+    r = requests.post(result_url, files)
+
+    return jsonify({'image_id': image_id, 'status': 'done'})
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=80)
