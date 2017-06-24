@@ -77,11 +77,13 @@ def launch_analysis():
     cv2.imwrite(dir_path+'/{}_ela.png'.format(image_id), output_image)
 
     # Object detection
-    call(['/home/mehdi/work/darknet/darknet',
+    call(['./darknet',
             'detect',
             '/home/mehdi/work/darknet/cfg/yolo.cfg',
             '/home/mehdi/work/darknet/yolo.weights',
-            dir_path+'/{}_original.jpg'.format(image_id)])
+            dir_path+'/{}_original.jpg'.format(image_id)],
+            shell=True, cwd='/home/mehdi/work/darknet/')
+
     os.rename('/home/mehdi/work/darknet/predictions.png', dir_path+'/{}_yolo.png'.format(image_id))
 
     # Send results
