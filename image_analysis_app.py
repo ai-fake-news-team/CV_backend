@@ -4,6 +4,9 @@ from flask import Flask, jsonify, abort, request, make_response, url_for
 from flask_httpauth import HTTPBasicAuth
 import sys
 import os
+import cv2
+import requests
+from subprocess import call
 
 base = '/home/mehdi/work/CV_backend/'
 
@@ -37,99 +40,44 @@ def not_found(error):
 def not_found(error):
     return make_response(jsonify( { 'error': 'Not found' } ), 404)
 
-tasks = [
-    {
-        'id': 1,
-        'title': u'Buy groceries',
-        'description': u'Milk, Cheese, Pizza, Fruit, Tylenol',
-        'done': False
-    },
-    {
-        'id': 2,
-        'title': u'Learn Python',
-        'description': u'Need to find a good Python tutorial on the web',
-        'done': False
-    }
-]
-
-def make_public_task(task):
-    new_task = {}
-    for field in task:
-        if field == 'id':
-            new_task['uri'] = url_for('get_task', task_id = task['id'], _external = True)
-        else:
-            new_task[field] = task[field]
-    return new_task
-
-@app.route('/todo/api/v1.0/tasks', methods = ['GET'])
+@app.route('/request_analysis/api', methods = ['POST'])
 @auth.login_required
-def get_tasks():
-    return jsonify( { 'tasks': map(make_public_task, tasks) } )
+def launch_analysis():
+    if not request.json or not 'image_id' in request.json or not 'image_url' in request.json:
+        abort(400)
 
-@app.route('/todo/api/v1.0/tasks/<int:task_id>', methods = ['GET'])
-@auth.login_required
-def get_task(task_id):
-    task = filter(lambda t: t['id'] == task_id, tasks)
-    if len(task) == 0:
-        abort(404)
-    return jsonify( { 'task': make_public_task(task[0]) } )
+    # Get ID and make directory
+    image_id = request.json['image_id']
+    dir_path = base+'analysis_results/'+image_id
+    if not os.path.isdir(dir_path):
+        os.makedirs(base+'analysis_results/'+image_id)
 
-@app.route('/todo/api/v1.0/tasks', methods = ['POST'])
-@auth.login_required
-def create_task():
-    if not request.json or not 'title' in request.json:
-        abort(400)
-    task = {
-        'id': tasks[-1]['id'] + 1,
-        'title': request.json['title'],
-        'description': request.json.get('description', ""),
-        'done': False
-    }
-    tasks.append(task)
-    return jsonify( { 'task': make_public_task(task) } ), 201
+    # Download image
+    image_url = request.json['image_url']
+    r = requests.get(image_url, timeout=0.5)
 
-@app.route('/todo/api/v1.0/tasks/<int:task_id>', methods = ['PUT'])
-@auth.login_required
-def update_task(task_id):
-    task = filter(lambda t: t['id'] == task_id, tasks)
-    if len(task) == 0:
-        abort(404)
-    if not request.json:
-        abort(400)
-    if 'title' in request.json and type(request.json['title']) != unicode:
-        abort(400)
-    if 'description' in request.json and type(request.json['description']) is not unicode:
-        abort(400)
-    if 'done' in request.json and type(request.json['done']) is not bool:
-        abort(400)
-    task[0]['title'] = request.json.get('title', task[0]['title'])
-    task[0]['description'] = request.json.get('description', task[0]['description'])
-    task[0]['done'] = request.json.get('done', task[0]['done'])
-    return jsonify( { 'task': make_public_task(task[0]) } )
+    if r.status_code == 200:
+        with open(dir_path+'/{}_original.jpg'.format(image_id), 'wb') as f:
+            f.write(r.content)
 
-@app.route('/todo/api/v1.0/tasks/<int:task_id>', methods = ['DELETE'])
-@auth.login_required
-def delete_task(task_id):
-    task = filter(lambda t: t['id'] == task_id, tasks)
-    if len(task) == 0:
-        abort(404)
-    tasks.remove(task[0])
-    return jsonify( { 'result': True } )
+    # Captioning
+    captions = get_caption(dir_path+'/{}_original.jpg'.format(image_id))
+    with open(dir_path+'/{}_caption.txt'.format(image_id), 'w'):
+        f.write("".join(captions[0]["sentence"]))
 
-@app.route('/api_test', methods = ['POST'])
-@auth.login_required
-def api_test():
-    if not request.json or not 'title' in request.json:
-        abort(400)
-    captions = get_caption(base+'example_images/lion.jpg')
-    task = {
-        'id': tasks[-1]['id'] + 1,
-        'title': request.json['title'],
-        'description': captions[0],
-        'done': False
-    }
-    tasks.append(task)
-    return jsonify( { 'task': make_public_task(task) } ), 201
+    # ELA analysis
+    ratio, output_image = cv2_ELA(dir_path+'/{}_original.jpg'.format(image_id))
+    cv2.imwrite(dir_path+'/{}_ela.png'.format(image_id), output_image)
+
+    # Object detection
+    call(['/home/mehdi/work/darknet/darknet',
+            'detect',
+            '/home/mehdi/work/darknet/cfg/yolo.cfg',
+            '/home/mehdi/work/darknet/yolo.weights',
+            dir_path+'/{}_original.jpg'])
+    os.rename('/home/mehdi/work/darknet/darknet/predictions.png', dir_path+'/{}_yolo.png'.format(image_id))
+
+    return
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=80)
