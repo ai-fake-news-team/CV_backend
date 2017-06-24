@@ -31,7 +31,7 @@ def cv2_ELA(name):
     scale = 15
     quality = 75
 
-    cv2.imwrite('temp.jpg', input_image, [cv2.IMWRITE_JPEG_QUALITY, quality])
+    cv2.imwrite(base+'ELA/temp.jpg', input_image, [cv2.IMWRITE_JPEG_QUALITY, quality])
 
     compressed_image = cv2.imread(base+'ELA/temp.jpg')
 
