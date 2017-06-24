@@ -1,8 +1,8 @@
 # CV_backend
 Machine Learning backend to detect fake images
 
-- [ ] Setup Azure instance with GPU (N6)
-- [ ] Install NVIDIA driver and CUDA
+- [x] Setup Azure instance with GPU (N6)
+- [x] Install NVIDIA driver and CUDA
 - [ ] Build OpenCV3
 - [ ] Install Deep Learning libraries (Chainer, Darknet, Tensorflow)
 - [ ] Build Google reverse search hack
@@ -19,3 +19,20 @@ https://developer.nvidia.com/compute/cuda/8.0/Prod2/local_installers/cuda_8.0.61
 
 # CUDNN 5.1
 https://developer.nvidia.com/compute/machine-learning/cudnn/secure/v5.1/prod_20161129/8.0/cudnn-8.0-linux-x64-v5.1-tgz
+
+# Env variable
+Add to `.bashrc`:
+```
+#Define CUDA_HOME environment variable
+export CUDA_HOME=/usr/local/cuda-8.0
+#Define LD_LIBRARY_PATH environment variable
+export LD_LIBRARY_PATH=${CUDA_HOME}/lib64
+#Add CUDA_HOME to PATH
+export PATH=${CUDA_HOME}/bin:${PATH}
+```
+
+# OpenCV
+https://gist.github.com/filitchp/5645d5eebfefe374218fa2cbf89189aa
+
+# Useful Tools:
+tmux, htop, gpustat
