@@ -1,7 +1,7 @@
 # CV_backend
 Machine Learning backend to detect fake images
 
-- [ ] Setup GCP instance with GPU
+- [ ] Setup Azure instance with GPU (N6)
 - [ ] Install NVIDIA driver and CUDA
 - [ ] Build OpenCV3
 - [ ] Install Deep Learning libraries (Chainer, Darknet, Tensorflow)
