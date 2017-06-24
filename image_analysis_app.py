@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 from flask import Flask, jsonify, abort, request, make_response, url_for
 #from flask.ext.httpauth import HTTPBasicAuth
 from flask_httpauth import HTTPBasicAuth
@@ -62,8 +64,9 @@ def launch_analysis():
 
     # Captioning
     captions = get_caption(dir_path+'/{}_original.jpg'.format(image_id))
+    sentence = u"".join(captions[0]["sentence"])
     with open(dir_path+'/{}_caption.txt'.format(image_id), 'w') as f:
-        f.write("".join(captions[0]["sentence"]))
+        f.write(sentence)
 
     # ELA analysis
     ratio, output_image = cv2_ELA(dir_path+'/{}_original.jpg'.format(image_id))
