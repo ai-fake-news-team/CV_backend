@@ -24,7 +24,7 @@ import numpy as np
 #     diff.show()
 
 def cv2_ELA(name):
-    input_image = cv2.imread('../../{}.jpg'.format(name))
+    input_image = cv2.imread('../example_images/{}.jpg'.format(name))
 
     scale = 15
     quality = 75
@@ -49,5 +49,5 @@ def cv2_ELA(name):
 
 if __name__ == '__main__':
     #ELA()
-    cv2_ELA('fake_demo')
-    #cv2_ELA('real_trump')
+    cv2_ELA('fake_ipad')
+    cv2_ELA('real_ipad')
