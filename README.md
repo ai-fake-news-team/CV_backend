@@ -3,16 +3,22 @@ Machine Learning backend to detect fake images
 
 - [x] Setup Azure instance with GPU (N6)
 - [x] Install NVIDIA driver and CUDA
-- [ ] Build OpenCV3
-- [ ] Install Deep Learning libraries (Chainer, Darknet, Tensorflow)
+- [x] Build OpenCV3
+- [x] Install Deep Learning libraries (Chainer, Darknet, Tensorflow)
 - [ ] Build Google reverse search hack
 - [ ] Build ELA algorithm with OpenCV
 - [ ] Implement ELA image fakeness scoring
-- [ ] Use Darknet for object detection
+- [x] Use Darknet for object detection
 - [ ] Use Chainer for caption generation
+- [ ] Setup flask API to handle requests
 - [ ] Train neural network to recognize weather, number plate, buildings, signs
 - [ ] Compare analysis results with original Tweet data
 - [ ] Return JSON report data
+
+# Azure instance
+- Standard NC6 (6 cores, 56 GB memory)
+- (West US 2)
+- Linux Ubuntu 16.04
 
 # NVIDIA CUDA 8.0 for Ubuntu 16.04
 https://developer.nvidia.com/compute/cuda/8.0/Prod2/local_installers/cuda_8.0.61_375.26_linux-run
@@ -35,4 +41,6 @@ export PATH=${CUDA_HOME}/bin:${PATH}
 https://gist.github.com/filitchp/5645d5eebfefe374218fa2cbf89189aa
 
 # Useful Tools:
-tmux, htop, gpustat
+- tmux
+- htop
+- gpustat
