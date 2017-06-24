@@ -4,7 +4,7 @@ from flask import Flask, jsonify, abort, request, make_response, url_for
 from flask_httpauth import HTTPBasicAuth
 import sys
 
-sys.path.append('./')
+sys.path.append('/home/mehdi/work/CV_backend/')
 from caption_generation.generate_caption import get_caption
 from ELA.ela import cv2_ELA
 
