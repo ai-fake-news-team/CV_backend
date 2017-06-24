@@ -45,9 +45,10 @@ def cv2_ELA(name):
     ratio = zero * 100 / float(total)
     print "# Black pixel ratio:", ratio
 
-    cv2.imwrite('results/{}_results.jpg'.format(name), output_image)
+    cv2.imwrite('results/{}_results.png'.format(name), output_image)
 
 if __name__ == '__main__':
     #ELA()
-    cv2_ELA('fake_ipad')
+    cv2_ELA('lion')
     cv2_ELA('real_ipad')
+    cv2_ELA('fake_ipad')
