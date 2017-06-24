@@ -1,22 +1,24 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import os
+import sys
+
+os.environ['PATH'] += ':/usr/local/cuda-8.0/bin'
+os.environ['LD_LIBRARY_PATH'] += ':/usr/local/cuda-8.0/lib64'
+
+base = '/home/mehdi/work/CV_backend/'
+sys.path.append(base)
+
 from flask import Flask, jsonify, abort, request, make_response, url_for
 #from flask.ext.httpauth import HTTPBasicAuth
 from flask_httpauth import HTTPBasicAuth
-import sys
-import os
 import cv2
 import requests
 from subprocess import call
 import codecs
 
-base = '/home/mehdi/work/CV_backend/'
 
-os.environ['PATH'] += ':/usr/local/cuda-8.0/bin'
-os.environ['LD_LIBRARY_PATH'] += ':/usr/local/cuda-8.0/lib64'
-
-sys.path.append(base)
 from caption_generation import get_caption
 from ELA import cv2_ELA
 
