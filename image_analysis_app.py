@@ -13,7 +13,8 @@ import codecs
 
 base = '/home/mehdi/work/CV_backend/'
 
-os.environ['PATH'] += ':/usr/local/cuda-8.0/bin:/usr/local/cuda-8.0/lib64'
+os.environ['PATH'] += ':/usr/local/cuda-8.0/bin'
+os.environ['LD_LIBRARY_PATH'] += ':/usr/local/cuda-8.0/lib64'
 
 sys.path.append(base)
 from caption_generation import get_caption
