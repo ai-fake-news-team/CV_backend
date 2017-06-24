@@ -79,7 +79,7 @@ def launch_analysis():
             '/home/mehdi/work/darknet/cfg/yolo.cfg',
             '/home/mehdi/work/darknet/yolo.weights',
             dir_path+'/{}_original.jpg'])
-    os.rename('/home/mehdi/work/darknet/darknet/predictions.png', dir_path+'/{}_yolo.png'.format(image_id))
+    os.rename('/home/mehdi/work/darknet/predictions.png', dir_path+'/{}_yolo.png'.format(image_id))
 
     return
 
