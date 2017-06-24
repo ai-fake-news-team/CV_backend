@@ -9,6 +9,7 @@ import os
 import cv2
 import requests
 from subprocess import call
+import codecs
 
 base = '/home/mehdi/work/CV_backend/'
 
@@ -66,7 +67,7 @@ def launch_analysis():
     captions = get_caption(dir_path+'/{}_original.jpg'.format(image_id))
     sentence = u"".join(captions[0]["sentence"])
     with open(dir_path+'/{}_caption.txt'.format(image_id), 'w') as f:
-        f.write(sentence)
+        f.write(sentence.encode('utf8'))
 
     # ELA analysis
     ratio, output_image = cv2_ELA(dir_path+'/{}_original.jpg'.format(image_id))
