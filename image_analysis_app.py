@@ -87,7 +87,7 @@ def launch_analysis():
     os.rename('/home/mehdi/work/darknet/predictions.png', dir_path+'/{}_yolo.png'.format(image_id))
 
     # Send results
-    result_url = 'http://httpbin.org/post'
+    result_url = 'http://taptappun.net/fey_kun/analized'
     files = {'object_img': open(dir_path+'/{}_yolo.png'.format(image_id), 'rb'),
              'error_img': open(dir_path+'/{}_ela.png'.format(image_id), 'rb'),
              'error_ratio': ratio,
