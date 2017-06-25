@@ -96,7 +96,7 @@ def launch_analysis():
     multiple_files = [
         ('object_img', ('{}_yolo.png'.format(image_id), open(dir_path+'/{}_yolo.png'.format(image_id), 'rb'), 'image/png')),
         ('error_img', ('{}_ela.png'.format(image_id), open(dir_path+'/{}_ela.png'.format(image_id), 'rb'), 'image/png')),
-        ('error_ratio', (ratio) ),
+        ('error_ratio', (str(ratio)) ),
         ('caption', (sentence)) ]
 
     r = requests.post(result_url, files=multiple_files)
