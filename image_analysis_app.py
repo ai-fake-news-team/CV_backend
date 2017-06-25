@@ -95,11 +95,11 @@ def launch_analysis():
 
     multiple_files = [
         ('object_img', ('{}_yolo.png'.format(image_id), open(dir_path+'/{}_yolo.png'.format(image_id), 'rb'), 'image/png')),
-        ('error_img', ('{}_ela.png'.format(image_id), open(dir_path+'/{}_ela.png'.format(image_id), 'rb'), 'image/png')),
-        ('error_ratio', (str(ratio)) ),
-        ('caption', (sentence)) ]
+        ('error_img', ('{}_ela.png'.format(image_id), open(dir_path+'/{}_ela.png'.format(image_id), 'rb'), 'image/png'))]
 
-    r = requests.post(result_url, files=multiple_files)
+    payload = (('error_ratio', str(ratio)), ('caption', sentence))
+
+    r = requests.post(result_url, files=multiple_files, data=payload)
     print "Post request status:", r.status_code
 
     return jsonify({'image_id': image_id, 'status': 'done'})
