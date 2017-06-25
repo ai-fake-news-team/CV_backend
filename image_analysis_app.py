@@ -35,7 +35,7 @@ def get_password(username):
 
 @auth.error_handler
 def unauthorized():
-    return make_response(jsonify( { 'error': 'Unauthorized access' } ), 403)
+    return make_response(jsonify( { 'error': 'Unauthorized access' } ), 401)
     # return 403 instead of 401 to prevent browsers from displaying the default auth dialog
 
 @app.errorhandler(400)
@@ -71,10 +71,12 @@ def launch_analysis():
     sentence = u"".join(captions[0]["sentence"])
     with open(dir_path+'/{}_caption.txt'.format(image_id), 'w') as f:
         f.write(sentence.encode('utf8'))
+    sentence = sentence.strip('<sos').strip('<eos>')
 
     # ELA analysis
     ratio, output_image = cv2_ELA(dir_path+'/{}_original.jpg'.format(image_id))
     cv2.imwrite(dir_path+'/{}_ela.png'.format(image_id), output_image)
+    ratio = str(ratio)[:2]+'%'
 
     # Object detection
     call(['./darknet',
