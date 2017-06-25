@@ -97,7 +97,9 @@ def launch_analysis():
         ('object_img', ('{}_yolo.png'.format(image_id), open(dir_path+'/{}_yolo.png'.format(image_id), 'rb'), 'image/png')),
         ('error_img', ('{}_ela.png'.format(image_id), open(dir_path+'/{}_ela.png'.format(image_id), 'rb'), 'image/png'))]
 
-    payload = (('error_ratio', str(ratio)), ('caption', sentence))
+    payload = ( ('image_id', image_id)
+                ('error_ratio', str(ratio)),
+                ('caption', sentence))
 
     r = requests.post(result_url, files=multiple_files, data=payload)
     print "Post request status:", r.status_code
