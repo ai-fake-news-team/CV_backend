@@ -17,7 +17,7 @@ import cv2
 import requests
 from subprocess import call
 import codecs
-
+import json
 
 from caption_generation import get_caption
 from ELA import cv2_ELA
@@ -98,11 +98,11 @@ def launch_analysis():
         ('error_img', ('{}_ela.png'.format(image_id), open(dir_path+'/{}_ela.png'.format(image_id), 'rb'), 'image/png'))]
 
     payload = {'image_id': image_id,
-                'result': {'error_ratio': str(ratio),
-                            'caption': sentence}
+                'result': json.dumps({'error_ratio': str(ratio),
+                                      'caption': sentence})
                 }
 
-    r = requests.post(result_url, files=multiple_files, json=payload)
+    r = requests.post(result_url, files=multiple_files, data=payload)
     print "Post request status:", r.status_code
 
     return jsonify({'image_id': image_id, 'status': 'done'})
