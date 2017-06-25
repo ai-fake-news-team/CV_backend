@@ -88,12 +88,18 @@ def launch_analysis():
 
     # Send results
     result_url = 'http://taptappun.net/fey_kun/analized'
-    files = {'object_img': open(dir_path+'/{}_yolo.png'.format(image_id), 'rb'),
-             'error_img': open(dir_path+'/{}_ela.png'.format(image_id), 'rb'),
-             'error_ratio': ratio,
-             'caption': sentence}
+    # files = {'object_img': open(dir_path+'/{}_yolo.png'.format(image_id), 'rb'),
+    #          'error_img': open(dir_path+'/{}_ela.png'.format(image_id), 'rb'),
+    #          'error_ratio': ratio,
+    #          'caption': sentence}
 
-    r = requests.post(result_url, files)
+    multiple_files = [
+        ('object_img', ('{}_yolo.png'.format(image_id), open(dir_path+'/{}_yolo.png'.format(image_id), 'rb'), 'image/png')),
+        ('error_img', ('{}_ela.png'.format(image_id), open(dir_path+'/{}_ela.png'.format(image_id), 'rb'), 'image/png')),
+        ('error_ratio', (ratio) ),
+        ('caption', (sentence)) ]
+
+    r = requests.post(result_url, files=multiple_files)
     print "Post request status:", r.status_code
 
     return jsonify({'image_id': image_id, 'status': 'done'})
