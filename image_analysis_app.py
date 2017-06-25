@@ -94,6 +94,7 @@ def launch_analysis():
              'caption': sentence}
 
     r = requests.post(result_url, files)
+    print "Post request status:", r.status_code
 
     return jsonify({'image_id': image_id, 'status': 'done'})
 
